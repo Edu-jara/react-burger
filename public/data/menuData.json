@@ -1,0 +1,230 @@
+[
+    {
+        "id": "hamburguesas",
+        "titulo": "Hamburguesas",
+        "datos": [
+            {
+                "id": "burg-1",
+                "nombre": "Burger Clásica",
+                "descripcion": "Medallón de carne, queso cheddar, lechuga y tomate",
+                "precio": 5500,
+                "imagen": "/images/hamburguesas/hamburguesa1.jpg"
+            },
+            {
+                "id": "burg-2",
+                "nombre": "Burger Doble Bacon",
+                "descripcion": "Doble carne, doble cheddar y panceta crujiente",
+                "precio": 7200,
+                "imagen": "/images/hamburguesas/hamburguesa2.jpg"
+            },
+            {
+                "id": "burg-3",
+                "nombre": "Burger Mega Cheddar",
+                "descripcion": "Triple carne, lluvia de cheddar fundido y salsa especial",
+                "precio": 8500,
+                "imagen": "/images/hamburguesas/hamburguesa3.jpg"
+            },
+            {
+                "id": "burg-4",
+                "nombre": "Burger Completa con Huevo",
+                "descripcion": "Carne, jamón, queso, lechuga, tomate y huevo a la plancha",
+                "precio": 6900,
+                "imagen": "/images/hamburguesas/hamburguesa4.jpg"
+            },
+            {
+                "id": "burg-5",
+                "nombre": "Burger Monster",
+                "descripcion": "Cuádruple carne, cuatro capas de cheddar y aros de cebolla",
+                "precio": 9800,
+                "imagen": "/images/hamburguesas/hamburguesa5.jpg"
+            },
+            {
+                "id": "burg-6",
+                "nombre": "Burger BBQ",
+                "descripcion": "Carne, cheddar, cebolla crispy y salsa barbacoa ahumada",
+                "precio": 7100,
+                "imagen": "/images/hamburguesas/hamburguesa6.jpg"
+            },
+            {
+                "id": "burg-7",
+                "nombre": "Burger Onion",
+                "descripcion": "Carne, doble queso provoleta y cebolla caramelizada",
+                "precio": 7400,
+                "imagen": "/images/hamburguesas/hamburguesa7.jpg"
+            },
+            {
+                "id": "burg-8",
+                "nombre": "Burger Picante",
+                "descripcion": "Carne, queso pepper jack, jalapeños y salsa picante de la casa",
+                "precio": 7300,
+                "imagen": "/images/hamburguesas/hamburguesa8.jpg"
+            },
+            {
+                "id": "burg-9",
+                "nombre": "Burger Veggie",
+                "descripcion": "Medallón de lentejas y quinoa, palta, rúcula y tomate confitado",
+                "precio": 6500,
+                "imagen": "/images/hamburguesas/hamburguesa9.jpg"
+            },
+            {
+                "id": "burg-10",
+                "nombre": "Burger de la Casa (Especial)",
+                "descripcion": "Medallón de roast beef, provoleta, morrones asados y chimichurri",
+                "precio": 8900,
+                "imagen": "/images/hamburguesas/hamburguesa10.jpg"
+            }
+        ]
+    },
+    {
+        "id": "pizzas",
+        "titulo": "Pizzas",
+        "datos": [
+            {
+                "id": "pizz-1",
+                "nombre": "Pizza Muzzarella",
+                "descripcion": "Salsa de tomate casera, muzzarella fundida y orégano",
+                "precio": 6800,
+                "imagen": "/images/pizzas/pizza1.jpg"
+            },
+            {
+                "id": "pizz-2",
+                "nombre": "Pizza Especial con Jamón",
+                "descripcion": "Muzzarella, jamón cocido, morrones asados y aceitunas",
+                "precio": 8100,
+                "imagen": "/images/pizzas/pizza2.jpg"
+            },
+            {
+                "id": "pizz-3",
+                "nombre": "Pizza Fugazzeta",
+                "descripcion": "Muzzarella abundante y mucha cebolla dorada al horno",
+                "precio": 7500,
+                "imagen": "/images/pizzas/pizza3.jpg"
+            },
+            {
+                "id": "pizz-4",
+                "nombre": "Pizza Calabresa",
+                "descripcion": "Salsa de tomate, muzzarella y rodajas de longaniza calabresa",
+                "precio": 8600,
+                "imagen": "/images/pizzas/pizza4.jpg"
+            },
+            {
+                "id": "pizz-5",
+                "nombre": "Pizza Napolitana",
+                "descripcion": "Muzzarella, rodajas de tomates frescos, ajo y perejil",
+                "precio": 7900,
+                "imagen": "/images/pizzas/pizza5.jpg"
+            },
+            {
+                "id": "pizz-6",
+                "nombre": "Pizza Roquefort con Nuez",
+                "descripcion": "Muzzarella, queso azul intenso y nueces picadas por encima",
+                "precio": 9200,
+                "imagen": "/images/pizzas/pizza6.jpg"
+            },
+            {
+                "id": "pizz-7",
+                "nombre": "Pizza Palmitos con Salsa Golf",
+                "descripcion": "Muzzarella, jamón, rodajas de palmitos y salsa golf",
+                "precio": 9500,
+                "imagen": "/images/pizzas/pizza7.jpg"
+            },
+            {
+                "id": "pizz-8",
+                "nombre": "Pizza Morrones y Panceta",
+                "descripcion": "Muzzarella, tiras de panceta crocante y morrones al horno",
+                "precio": 8800,
+                "imagen": "/images/pizzas/pizza8.jpg"
+            },
+            {
+                "id": "pizz-9",
+                "nombre": "Pizza Rucula y Jamón Crudo",
+                "descripcion": "Muzzarella, jamón crudo estacionado, rúcula fresca y parmesano",
+                "precio": 9900,
+                "imagen": "/images/pizzas/pizza9.jpg"
+            },
+            {
+                "id": "pizz-10",
+                "nombre": "Pizza Cuatro Quesos",
+                "descripcion": "Muzzarella, provolone, roquefort y sardo",
+                "precio": 9400,
+                "imagen": "/images/pizzas/pizza10.jpg"
+            }
+        ]
+    },
+    {
+        "id": "empanadas",
+        "titulo": "Empanadas",
+        "datos": [
+            {
+                "id": "emp-1",
+                "nombre": "Empanada de Carne Suave",
+                "descripcion": "Carne cortada a cuchillo, cebolla, verdeo y condimentos suaves",
+                "precio": 900,
+                "imagen": "/images/empanadas/empanada1.jpg"
+            },
+            {
+                "id": "emp-2",
+                "nombre": "Empanada de Jamón y Queso",
+                "descripcion": "Mezcla clásica de quesos fundidos y jamón selecto",
+                "precio": 900,
+                "imagen": "/images/empanadas/empanada2.jpg"
+            },
+            {
+                "id": "emp-3",
+                "nombre": "Empanada de Carne Picante",
+                "descripcion": "Carne picada con ají molido picante, pimentón y cebolla de verdeo",
+                "precio": 950,
+                "imagen": "/images/empanadas/empanada3.jpg"
+            },
+            {
+                "id": "emp-4",
+                "nombre": "Empanada de Pollo",
+                "descripcion": "Pollo desmenuzado salteado con morrones, cebolla y un toque de crema",
+                "precio": 900,
+                "imagen": "/images/empanadas/empanada4.jpg"
+            },
+            {
+                "id": "emp-5",
+                "nombre": "Empanada de Verdura y Queso",
+                "descripcion": "Acelga fresca salteada con ajo, salsa blanca y muzzarella",
+                "precio": 850,
+                "imagen": "/images/empanadas/empanada5.jpg"
+            },
+            {
+                "id": "emp-6",
+                "nombre": "Empanada Caprese",
+                "descripcion": "Muzzarella, cubitos de tomate fresco y hojas de albahaca",
+                "precio": 900,
+                "imagen": "/images/empanadas/empanada6.jpg"
+            },
+            {
+                "id": "emp-7",
+                "nombre": "Empanada de Cebolla y Queso (Fugazzeta)",
+                "descripcion": "Cebolla caramelizada y abundante muzzarella estirada",
+                "precio": 880,
+                "imagen": "/images/empanadas/empanada7.jpg"
+            },
+            {
+                "id": "emp-8",
+                "nombre": "Empanada de Roquefort",
+                "descripcion": "Salsa blanca espesa con queso azul derretido",
+                "precio": 980,
+                "imagen": "/images/empanadas/empanada8.jpg"
+            },
+            {
+                "id": "emp-9",
+                "nombre": "Empanada de Humita",
+                "descripcion": "Crema de choclo dulce con sofrito de cebolla y morrón",
+                "precio": 850,
+                "imagen": "/images/empanadas/empanada9.jpg"
+            },
+            {
+                "id": "emp-10",
+                "nombre": "Empanada de Panceta y Cheddar",
+                "descripcion": "Crocante de panceta ahumada con pasta de queso cheddar",
+                "precio": 1000,
+                "imagen": "/images/empanadas/empanada10.jpg"
+            }
+        ]
+    }
+]

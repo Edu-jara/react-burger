@@ -1,0 +1,220 @@
+/* Variables locales y contenedor principal */
+.containerMenu {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+}
+
+/* Contenedor estético para el encabezado de la sección */
+.headerMenuContainer {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    position: relative;
+    padding-top: 0.5rem;
+}
+
+/* Un badge pequeño superior estilo "etiqueta de calidad" */
+.badgeCarta {
+    display: inline-block;
+    background-color: #fff3e0;
+    color: #e65100;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(230, 81, 0, 0.15);
+}
+
+.tituloPrincipal {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #f6ad04;
+    /* Texto oscuro fuerte y elegante */
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -1px;
+}
+
+/* Línea decorativa moderna con un punto central o mini acento */
+.decoracionLinea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.decoracionLinea::before,
+.decoracionLinea::after {
+    content: "";
+    height: 2px;
+    width: 60px;
+    background: linear-gradient(to right, transparent, #ff6b00);
+}
+
+.decoracionLinea::after {
+    background: linear-gradient(to left, transparent, #ff6b00);
+}
+
+.puntoCentral {
+    width: 8px;
+    height: 8px;
+    background-color: #ff6b00;
+    border-radius: 50%;
+}
+
+/* Secciones y títulos */
+.seccion {
+    margin-bottom: 3.5rem;
+}
+
+.tituloCategoria {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f1e9e9;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #ff6b00;
+    display: inline-block;
+    padding-bottom: 0.2rem;
+}
+
+/* Grilla Responsiva Corregida para Evitar Estiramientos Exagerados */
+.gridProductos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 300px));
+    gap: 2rem;
+    justify-content: start;
+}
+
+/* Tarjeta (Card) con sombra y elevación */
+.card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Contenedor de Imagen y Efecto Zoom */
+.imageContainer {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+.imageContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.card:hover .imageContainer img {
+    transform: scale(1.08);
+}
+
+/* Contenido Interno de la Tarjeta */
+.cardContent {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.cardContent h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 0.5rem 0;
+}
+
+.cardContent p {
+    font-size: 0.9rem;
+    color: #666666;
+    line-height: 1.4;
+    margin: 0 0 1.25rem 0;
+    flex-grow: 1;
+}
+
+/* Precio Destacado */
+.precio {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #e65100;
+    background-color: #fff3e0;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    align-self: flex-start;
+}
+
+
+/* Estilos del Submenú / Tabs de Categorías */
+/* En Menu.module.css */
+.submenu {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.75rem;
+    margin-top: 0.5rem;
+    /* Opcional: espacio limpio con el buscador */
+}
+
+.tabBtn {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #555555;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.tabBtn:hover {
+    background-color: #e0e0e0;
+    color: #1a1a1a;
+}
+
+.tabBtn.active {
+    background-color: #ff6b00;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+}
+
+
+/* Animación de latido  para el botón de favoritos */
+@keyframes heartPop {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.35) rotate(-12deg);
+    }
+
+    80% {
+        transform: scale(0.9) rotate(4deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.heartPop {
+    animation: heartPop 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.28);
+}
