@@ -1,15 +1,16 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMenu } from '../../context/MenuContext';
 import ProductCard from '../ui/ProductCard';
 import { useFavorites } from '../../context/FavoritesContext';
 import styles from './Menu.module.css';
 
+
 const Menu = () => {
-    // 1. Contexto de Favoritos
+    //  Contexto de Favoritos
     const { favoritesCount = 0, isFavorite } = useFavorites();
 
-    // 2. Contexto del Menú (Extraemos todo en un solo bloque)
+    //  Contexto del Menú (Extraemos todo en un solo bloque)
     const menuContext = useMenu() || {};
     const {
         cargando,
@@ -22,7 +23,16 @@ const Menu = () => {
         setSelectedCategory: setCategoriaActiva
     } = menuContext;
 
-    // 3. Calculamos las secciones según la categoría activa
+    // Sube la pantalla arriba cada vez que hacés clic en una pestaña
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'instant' // Salto instantáneo
+        });
+    }, [categoriaActiva]);
+
+    //  Calculamos las secciones según la categoría activa
     const seccionesAmostrar = useMemo(() => {
         // Caso 1: Pestaña Favoritos activa
         if (categoriaActiva === 'favorites') {
@@ -47,7 +57,7 @@ const Menu = () => {
         return categoriasFiltradas.filter(cat => cat && cat.id === categoriaActiva);
     }, [categoriaActiva, categorias, categoriasFiltradas, isFavorite]);
 
-    // 4. PANTALLA DE CARGA
+    //  PANTALLA DE CARGA
     if (cargando) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center text-white pt-12">
@@ -57,7 +67,7 @@ const Menu = () => {
         );
     }
 
-    // 5. PANTALLA DE ERROR
+    //  PANTALLA DE ERROR
     if (error) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center text-red-400 p-4 pt-12">
@@ -67,7 +77,7 @@ const Menu = () => {
         );
     }
 
-    // 6. RENDERIZADO PRINCIPAL
+    //  RENDERIZADO PRINCIPAL
     return (
         <div id="menu" className={styles.containerMenu}>
             <div className={styles.headerMenuContainer}>

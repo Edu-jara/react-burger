@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect, useMemo, useCall
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-    // 1. Inicialización perezosa (Solo lee localStorage al montar)
+    //  Inicialización perezosa (Solo lee localStorage al montar)
     const [cart, setCart] = useState(() => {
         try {
             const savedCart = localStorage.getItem('react_burger_cart');
@@ -17,7 +17,7 @@ export function CartProvider({ children }) {
     // Control de visibilidad del panel lateral del carrito
     const [isCartOpen, setIsCartOpen] = useState(false);
 
-    // 2. Sincronización automática con localStorage
+    //  Sincronización automática con localStorage
     useEffect(() => {
         try {
             localStorage.setItem('react_burger_cart', JSON.stringify(cart));
@@ -26,7 +26,7 @@ export function CartProvider({ children }) {
         }
     }, [cart]);
 
-    // 3. Sincronización multi-pestaña
+    //  Sincronización multi-pestaña
     useEffect(() => {
         const handleStorageChange = (e) => {
             if (e.key === 'react_burger_cart' && e.newValue) {
@@ -41,7 +41,7 @@ export function CartProvider({ children }) {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
-    // 4. Métodos para manipular el carrito
+    //  Métodos para manipular el carrito
     const addToCart = useCallback((product) => {
         setCart(prevCart => {
             const existingIndex = prevCart.findIndex(item => item.id === product.id);
@@ -94,7 +94,7 @@ export function CartProvider({ children }) {
         }, 0);
     }, [cart]);
 
-    // 6. Integración para enviar pedido a WhatsApp
+    //  Integración para enviar pedido a WhatsApp
     const sendOrderToWhatsApp = useCallback((customerData) => {
         const phoneNumber = "5492215340285"; // Reemplazar por el WhatsApp real del local
 
@@ -122,7 +122,7 @@ export function CartProvider({ children }) {
         window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
     }, [cart, cartTotal]);
 
-    // 7. Memoización del valor del contexto
+    //  Memoización del valor del contexto
     const value = useMemo(() => ({
         cart,
         isCartOpen,

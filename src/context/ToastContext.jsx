@@ -7,23 +7,23 @@ export function ToastProvider({ children }) {
     const [toasts, setToasts] = useState([]);
 
     const addToast = useCallback((message, icon = '🛒') => { // Acepta icon, default '🛒'
-    const id = Date.now();
-    // Guardamos message E icon en el nuevo objeto de toast
-    setToasts(prev => [...prev, { id, message, icon }]); 
+        const id = Date.now();
+        // Guardamos message E icon en el nuevo objeto de toast
+        setToasts(prev => [...prev, { id, message, icon }]);
 
-    setTimeout(() => {
-        setToasts(prev => prev.filter(toast => toast.id !== id));
-    }, 3000);
-}, []);
+        setTimeout(() => {
+            setToasts(prev => prev.filter(toast => toast.id !== id));
+        }, 3000);
+    }, []);
 
     return (
         <ToastContext.Provider value={{ addToast }}>
             {children}
-            {/* Notificaciones flotantes abajo a la derecha */}
-            <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none">
+            {/* Notificaciones flotantes: Arriba en móvil (top-20), abajo a la derecha en desktop (md:top-auto md:bottom-5 md:right-5) */}
+            <div className="fixed top-20 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:top-auto md:bottom-5 md:right-5 z-50 flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm md:w-auto">
                 <AnimatePresence>
                     {toasts.map(toast => (
-                        <motion.div 
+                        <motion.div
                             key={toast.id}
                             initial={{ opacity: 0, y: 20, scale: 0.9 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}

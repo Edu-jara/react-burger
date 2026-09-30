@@ -7,7 +7,8 @@ export default function BotonWhatsApp({
     numero = SITE_CONFIG.whatsapp.number, 
     mensaje = SITE_CONFIG.whatsapp.defaultMessage,
     flotante = true, 
-    alHacerClic 
+    alHacerClic,
+    cantidadTotal = 0 //  Recibe la cantidad del carrito
 }) {
     const [mostrarGlobo, setMostrarGlobo] = useState(true);
 
@@ -31,8 +32,12 @@ export default function BotonWhatsApp({
         );
     }
 
+    // 👈 2. Evalúa la posición según la cantidad
+    const posicionBottom = cantidadTotal > 0 ? 'bottom-24' : 'bottom-6';
+
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+        /* 👈 3. Se usa ${posicionBottom} y transition-all para la animación */
+        <div className={`fixed ${posicionBottom} right-6 z-50 flex flex-col items-end pointer-events-none transition-all duration-300`}>
             {mostrarGlobo && (
                 /* 'hidden md:flex' -> Invisible en celular, visible en escritorio */
                 <div className="hidden md:flex animate-fade-in mb-3 pointer-events-auto">
@@ -69,4 +74,5 @@ BotonWhatsApp.propTypes = {
     mensaje: PropTypes.string,
     flotante: PropTypes.bool,
     alHacerClic: PropTypes.func,
+    cantidadTotal: PropTypes.number,
 };
