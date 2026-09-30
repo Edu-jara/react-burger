@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 const FavoritesContext = createContext();
 
 export function FavoritesProvider({ children }) {
-    // Inicialización perezosa: lee localStorage solo una vez al montar
+    // Inicialización lenta: lee localStorage solo una vez al montar
     const [favorites, setFavorites] = useState(() => {
         try {
             const saved = localStorage.getItem('burgerhub_favorites');

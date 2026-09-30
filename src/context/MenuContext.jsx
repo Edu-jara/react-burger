@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const MenuContext = createContext();
 
 export function MenuProvider({ children }) {
-    // 1. LOS 3 ESTADOS
+    //  LOS  ESTADOS
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [categorias, setCategorias] = useState([]);
@@ -11,7 +11,7 @@ export function MenuProvider({ children }) {
 
     const [selectedCategory, setSelectedCategory] = useState('todas');
 
-    // 2. PETICIÓN AL MONTAR
+    //  PETICIÓN AL MONTAR
     useEffect(() => {
         fetch('/data/menuData.json')
             .then((res) => {
@@ -41,7 +41,7 @@ export function MenuProvider({ children }) {
             });
     }, []);
 
-    // 3. FILTRADO SEGURO CON OPTIONAL CHAINING (?.)
+    //  FILTRADO SEGURO CON OPTIONAL CHAINING (?.)
     const query = searchQuery.toLowerCase().trim();
 
     const categoriasFiltradas = (categorias || []).map(categoria => {

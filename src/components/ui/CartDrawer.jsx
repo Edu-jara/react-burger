@@ -58,7 +58,7 @@ export default function CartDrawer() {
         <AnimatePresence>
             {isCartOpen && (
                 <div className="fixed inset-0 z-50 flex justify-end overflow-hidden">
-                    {/* Backdrop / Fondo oscuro con animación de Fade */}
+                    {/* Backdrop / Fondo oscuro con animación  */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}

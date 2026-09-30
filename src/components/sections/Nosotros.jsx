@@ -25,7 +25,7 @@ export default function Nosotros() {
     ];
     return (
         <section id="nosotros" className="py-20 bg-zinc-950 text-white relative overflow-hidden">
-            {/* Fondo sutil con luces de acento */}
+            {/* Fondo sutil  */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
 

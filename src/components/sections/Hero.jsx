@@ -35,7 +35,7 @@ export default function Hero() {
         setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
     }, [slides.length]);
 
-    // Manejo limpio del intervalo sin fugas de memoria
+    // Manejo limpio 
     useEffect(() => {
         if (isPaused) return;
 

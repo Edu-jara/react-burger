@@ -6,7 +6,7 @@ const ToastContext = createContext();
 export function ToastProvider({ children }) {
     const [toasts, setToasts] = useState([]);
 
-    const addToast = useCallback((message, icon = '🛒') => { // Acepta icon, default '🛒'
+    const addToast = useCallback((message, icon = '🛒') => { // Acepta icon, default 
         const id = Date.now();
         // Guardamos message E icon en el nuevo objeto de toast
         setToasts(prev => [...prev, { id, message, icon }]);

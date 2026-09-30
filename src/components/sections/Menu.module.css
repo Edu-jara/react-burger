@@ -15,7 +15,7 @@
     padding-top: 0.5rem;
 }
 
-/* Un badge pequeño superior estilo "etiqueta de calidad" */
+/* Un badge pequeño superior  */
 .badgeCarta {
     display: inline-block;
     background-color: #fff3e0;
@@ -39,7 +39,7 @@
     letter-spacing: -1px;
 }
 
-/* Línea decorativa moderna con un punto central o mini acento */
+/* Línea decorativa moderna */
 .decoracionLinea {
     display: flex;
     align-items: center;
@@ -162,14 +162,14 @@
 
 
 /* Estilos del Submenú / Tabs de Categorías */
-/* En Menu.module.css */
+
 .submenu {
     display: flex;
     gap: 0.5rem;
     overflow-x: auto;
     padding-bottom: 0.75rem;
     margin-top: 0.5rem;
-    /* Opcional: espacio limpio con el buscador */
+    
 }
 
 .tabBtn {

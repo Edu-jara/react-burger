@@ -36,7 +36,7 @@ export default function Footer() {
                         </nav>
                     )}
 
-                    {/* Redes Sociales (Opcional, si existen en tu SITE_CONFIG) */}
+                    {/* Redes Sociales  */}
                     {(contacto?.instagram || contacto?.facebook) && (
                         <div className="flex items-center space-x-4 border-t sm:border-t-0 sm:border-l border-zinc-800 pt-3 sm:pt-0 sm:pl-4">
                             {contacto.instagram && (

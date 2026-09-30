@@ -8,7 +8,7 @@ import { CartProvider } from './context/CartContext';
 import { ToastProvider } from './context/ToastContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 
-// Layout Maestro
+// Layout 
 import Layout from './components/layout/Layout';
 
 // Páginas

@@ -7,7 +7,7 @@ import CartDrawer from '../ui/CartDrawer';
 import BotonWhatsApp from '../ui/Botonwhatsapp';
 import BarraFinalizarCompra from '../ui/BarraFinalizarCompra';
 
-import { useCart } from '../../context/CartContext'; // Ajustá la ruta según corresponda
+import { useCart } from '../../context/CartContext'; 
 
 export default function Layout() {
     // Consumimos todo directamente del Context
