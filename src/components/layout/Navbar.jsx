@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { SITE_CONFIG } from '../../config/constants'; // Ajustá la ruta si estás en components/layout/
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import { SITE_CONFIG } from '../../config/constants';
 import { useMenu } from '../../context/MenuContext';
 import { useCart } from '../../context/CartContext';
 import { useFavorites } from '../../context/FavoritesContext';
@@ -8,22 +8,39 @@ import { useFavorites } from '../../context/FavoritesContext';
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     // Contextos
     const { searchQuery, setSearchQuery, setSelectedCategory } = useMenu();
     const { itemCount, setIsCartOpen } = useCart();
     const { favoritesCount } = useFavorites();
 
+    // Handler unificado para "Inicio" (Subir arriba o ir a '/')
+    const handleInicioClick = (e) => {
+        setIsMenuOpen(false);
+
+        if (location.pathname === '/') {
+            if (e && e.preventDefault) e.preventDefault();
+            
+            // Un breve timeout asegura que el render de React no cancele el scroll en móvil
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            }, 50);
+        } else {
+            navigate('/');
+        }
+    };
+
     // Estilos de NavLink activo
     const navLinkStyles = ({ isActive }) =>
-        `text-sm font-medium transition-colors ${
-            isActive ? 'text-amber-500 font-bold' : 'text-zinc-300 hover:text-amber-500'
-        }`;
+        `text-sm font-medium transition-colors ${isActive ? 'text-amber-500 font-bold' : 'text-zinc-300 hover:text-amber-500'}`;
 
     const navLinkMobileStyles = ({ isActive }) =>
-        `block text-sm font-medium py-1 transition-colors ${
-            isActive ? 'text-amber-500 font-bold' : 'text-zinc-300 hover:text-amber-500'
-        }`;
+        `block text-sm font-medium py-1 transition-colors ${isActive ? 'text-amber-500 font-bold' : 'text-zinc-300 hover:text-amber-500'}`;
 
     // Handler Favoritos
     const handleFavoritesClick = () => {
@@ -44,17 +61,27 @@ export default function Navbar() {
         <header className="fixed top-0 left-0 w-full z-50 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
 
-                {/* Logo + Enlaces PC (Mapeados dinámicamente) */}
+                {/* Logo + Enlaces PC */}
                 <div className="flex items-center gap-8">
-                    <Link to="/" className="text-xl font-black text-amber-500 tracking-wider">
+                    <Link 
+                        to="/" 
+                        onClick={handleInicioClick}
+                        className="text-xl font-black text-amber-500 tracking-wider"
+                    >
                         {SITE_CONFIG.nombre.toUpperCase()}
                     </Link>
 
+                    {/* Enlaces PC */}
                     <nav className="hidden md:flex items-center gap-6">
                         {SITE_CONFIG.mainNav.map((link) => (
-                            <NavLink 
-                                key={link.to} 
-                                to={link.to} 
+                            <NavLink
+                                key={link.to}
+                                to={link.to}
+                                onClick={(e) => {
+                                    if (link.to === '/') {
+                                        handleInicioClick(e);
+                                    }
+                                }}
                                 className={navLinkStyles}
                             >
                                 {link.label}
@@ -68,7 +95,7 @@ export default function Navbar() {
                     <div className="relative flex items-center">
                         <input
                             type="text"
-                            placeholder="Buscar hamburguesa, bebida..."
+                            placeholder="Buscar hamburguesa, pizzas, empanadas..."
                             value={searchQuery}
                             onFocus={() => navigate('/menu')}
                             onChange={handleSearchChange}
@@ -125,14 +152,20 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Menú desplegable Móvil (Mapeado dinámicamente) */}
+            {/* Menú desplegable Móvil (Mapeado con soporte para Inicio) */}
             {isMenuOpen && (
                 <nav className="md:hidden bg-zinc-900 border-b border-zinc-800 px-4 py-4 space-y-3">
                     {SITE_CONFIG.mainNav.map((link) => (
                         <NavLink
                             key={link.to}
                             to={link.to}
-                            onClick={() => setIsMenuOpen(false)}
+                            onClick={(e) => {
+                                if (link.to === '/') {
+                                    handleInicioClick(e);
+                                } else {
+                                    setIsMenuOpen(false);
+                                }
+                            }}
                             className={navLinkMobileStyles}
                         >
                             {link.label}
