@@ -1,16 +1,32 @@
-# React + Vite
+# App de Comidas Fast Food (Hamburguesas, Pizzas y Empanadas)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto final desarrollado por Eduardo Jara para la aprobación del curso de React. Se trata de una aplicación web moderna e interactiva para explorar el menú, seleccionar productos y gestionar pedidos de comida rápida.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Funcionalidades
 
-## React Compiler
+- Navegación Dinámica (SPA): Uso de rutas para navegar sin recargar la página entre las distintas secciones del sitio.
+- Catálogo de Productos: Exploración por categorías de Hamburguesas, Pizzas y Empanadas.
+- Carrito de Compras: Agregar, eliminar e incrementar/decrementar la cantidad de productos.
+- Formulario de Contacto / Pedidos: Integración para envío de mensajes o confirmación vía Email.
+- Animaciones e Interfaz Fluida: Transiciones suaves para mejorar la experiencia de usuario (UX).
+- Diseño Responsivo: Adaptado completamente a dispositivos móviles, tablets y computadoras.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tecnologías Utilizadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React (Componentes funcionales, Hooks)
+- Vite (Entorno de desarrollo rápido y empaquetador)
+- React Router  (`react-router-dom` para el enrutamiento de la app)
+- Tailwind CSS v4 (Diseño y estilos utilitarios modernos)
+- Framer Motion (Animaciones e interacciones dinámicas)
+- Lucide React & React Icons (Iconografía de la interfaz)
+- EmailJS (`@emailjs/browser` para la gestión de formularios de contacto)
+
+---
+
+
+## Demo desplegada
+Puedes ver la versión funcional en: https://react-burger-five-wine.vercel.app/
