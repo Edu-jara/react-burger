@@ -81,8 +81,13 @@ const Menu = () => {
     return (
         <div id="menu" className={styles.containerMenu}>
             <div className={styles.headerMenuContainer}>
-                <span className={styles.badgeCarta}>Sabor & Calidad</span>
-                <h2 className={styles.tituloPrincipal}>Nuestra Carta Exclusiva</h2>
+                <span className="inline-block text-[11px] md:text-xs font-black uppercase tracking-widest px-2.5 py-0.5 md:px-3 md:py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 mb-1.5 md:mb-3">
+                    Sabor & Calidad
+                </span>
+                {/* Tamaño compacto en celular, grande en computadoras */}
+                <h2 className="text-xl md:text-4xl font-extrabold text-white leading-tight mb-2">
+                    Nuestra Carta Exclusiva
+                </h2>
                 <div className={styles.decoracionLinea}>
                     <span className={styles.puntoCentral}></span>
                 </div>
@@ -180,10 +185,10 @@ const Menu = () => {
                                             layout
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ 
-                                                opacity: 0, 
-                                                scale: 0.8, 
-                                                transition: { duration: 0.25, ease: 'easeIn' } 
+                                            exit={{
+                                                opacity: 0,
+                                                scale: 0.8,
+                                                transition: { duration: 0.25, ease: 'easeIn' }
                                             }}
                                             transition={{ duration: 0.3 }}
                                         >
