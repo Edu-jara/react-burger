@@ -1,28 +1,39 @@
-import React from 'react';
+
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function Nosotros() {
+
+
+
     // Tarjetas de valor destacadas
     const valores = [
         {
-            
+
             titulo: 'Pasión Artesanal',
             descripcion: 'Cada plato se prepara al momento con recetas propias e ingredientes seleccionados.',
             imagen: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?auto=format&fit=crop&w=600&q=80' // Fuego / Cocción
         },
         {
-            
+
             titulo: 'Calidad Premium',
             descripcion: 'Trabajamos con productores locales para garantizar la máxima frescura en tu mesa.',
             imagen: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80' // Ingredientes frescos
         },
         {
-            
+
             titulo: 'Entrega Veloz',
             descripcion: 'Empaques térmicos diseñados para que tu pedido llegue caliente y perfecto.',
             imagen: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=600&q=80' // Delivery / Empaque
         }
     ];
+    const [indexActivo, setIndexActivo] = useState(0);
+    const handleScroll = (e) => {
+        const scrollLeft = e.target.scrollLeft;
+        const cardWidth = e.target.offsetWidth * 0.75; // Ancho aproximado de la tarjeta + gap
+        const index = Math.round(scrollLeft / cardWidth);
+        setIndexActivo(Math.min(index, valores.length - 1));
+    };
     return (
         <section id="nosotros" className="py-20 bg-zinc-950 text-white relative overflow-hidden">
             {/* Fondo sutil  */}
@@ -106,8 +117,12 @@ export default function Nosotros() {
 
                 </div>
 
-                {/* Grid de 3 Tarjetas de Valor */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                {/* Grid de 3 Tarjetas de Valor (Carrusel en Mobile / Grilla de 3 en Desktop) */}
+
+                <div
+                    onScroll={handleScroll}
+                    className="flex gap-4 overflow-x-auto snap-x snap-mandatory pt-3 pb-6 px-2 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-4 md:px-0 scrollbar-none">
                     {valores.map((item, index) => (
                         <motion.div
                             key={index}
@@ -116,7 +131,10 @@ export default function Nosotros() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.15 }}
                             whileHover={{ y: -6 }}
-                            className="relative h-[260px] rounded-2xl overflow-hidden border border-zinc-800 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] transition-all duration-300 group shadow-xl flex flex-col justify-end p-6 cursor-pointer"
+                            className={`relative h-[260px] w-[280px] min-w-[280px] sm:min-w-[60vw] md:min-w-full shrink-0 snap-center rounded-2xl overflow-hidden border transition-all duration-500 group shadow-xl flex flex-col justify-end p-6 cursor-pointer ${indexActivo === index
+                                ? 'border-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.25)]'
+                                : 'border-zinc-800 md:hover:border-amber-500 md:hover:shadow-[0_0_20px_rgba(245,158,11,0.25)]'
+                                }`}
                         >
                             {/* 1. Imagen de fondo con zoom en hover */}
                             <img
@@ -131,8 +149,8 @@ export default function Nosotros() {
 
                             {/* 3. Contenido de la tarjeta (Al frente con z-10) */}
                             <div className="relative z-10">
-                                
-                                <h4 className="text-lg font-bold text-white mb-1 group-hover:text-amber-400 transition-colors">
+                                <h4 className={`text-lg font-bold mb-1 transition-colors ${indexActivo === index ? 'text-amber-400' : 'text-white md:group-hover:text-amber-400'
+                                    }`}>
                                     {item.titulo}
                                 </h4>
 
@@ -143,8 +161,24 @@ export default function Nosotros() {
                         </motion.div>
                     ))}
                 </div>
+                {/* Indicadores / Dots (solo visibles en mobile) */}
+                <div className="flex justify-center items-center gap-2 pt-4 md:hidden">
+                    {valores.map((_, index) => (
+                        <span
+                            key={index}
+                            className={`h-2 rounded-full transition-all duration-300 ${indexActivo === index
+                                ? 'w-6 bg-amber-500' // Puntito activo: más ancho y dorado
+                                : 'w-2 bg-zinc-700'  // Puntito inactivo: gris y pequeño
+                                }`}
+                        />
+                    ))}
+                </div>
 
             </div>
         </section>
     );
 }
+
+
+
+
