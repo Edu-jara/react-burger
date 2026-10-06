@@ -6,7 +6,7 @@ export function FavoritesProvider({ children }) {
     // Inicialización lenta: lee localStorage solo una vez al montar
     const [favorites, setFavorites] = useState(() => {
         try {
-            const saved = localStorage.getItem('burgerhub_favorites');
+            const saved = localStorage.getItem('burgerhub_favorites_v2');
             return saved ? JSON.parse(saved) : [];
         } catch (error) {
             console.error("Error al cargar favoritos desde localStorage:", error);
@@ -17,7 +17,7 @@ export function FavoritesProvider({ children }) {
     // Sincronización automática con localStorage en cada cambio
     useEffect(() => {
         try {
-            localStorage.setItem('burgerhub_favorites', JSON.stringify(favorites));
+            localStorage.setItem('burgerhub_favorites_v2', JSON.stringify(favorites));
         } catch (error) {
             console.error("Error al guardar favoritos en localStorage:", error);
         }
