@@ -1,11 +1,20 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
+
+// 1. Importamos la conexión de Firebase y los métodos de Firestore
+import { db } from '../firebase/config'; 
+import { collection, getDocs } from 'firebase/firestore';
+
+
+
+
 const MenuContext = createContext();
 
 export function MenuProvider({ children }) {
     //  LOS  ESTADOS
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
+    const [productos, setProductos] = useState([]); // Guardamos la lista plana de productos
     const [categorias, setCategorias] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -13,51 +22,45 @@ export function MenuProvider({ children }) {
 
     //  PETICIÓN AL MONTAR
     useEffect(() => {
-        fetch('/data/menuData.json')
-            .then((res) => {
-                // Si la respuesta no es OK (ej. 404), lanzamos un error claro
-                if (!res.ok) {
-                    throw new Error(`Error HTTP ${res.status}: No se encontró el archivo /data/menuData.json`);
-                }
+        setCargando(true);
 
-                // Verificamos que el servidor devuelva contenido tipo JSON y no HTML
-                const contentType = res.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error("El archivo devuelto no es un JSON válido (probablemente devolvió un HTML 404). Checkea que esté en public/data/menuData.json");
-                }
+        // Referencia a la colección en Firestore
+        const productosRef = collection(db, "productos nacionales");
 
-                return res.json();
-            })
-            .then((datos) => {
-                console.log("✅ JSON cargado exitosamente:", datos);
-                setCategorias(datos);
+        getDocs(productosRef)
+            .then((resp) => {
+                // Mapeamos los documentos de Firestore agregando el id
+                const listaProductos = resp.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                console.log("✅ Productos cargados desde Firestore:", listaProductos);
+                setProductos(listaProductos);
             })
             .catch((err) => {
-                console.error("❌ Falló la carga del menú:", err.message);
+                console.error("❌ Falló la carga desde Firestore:", err.message);
                 setError(err.message);
             })
             .finally(() => {
                 setCargando(false);
             });
     }, []);
-
-    //  FILTRADO SEGURO CON OPTIONAL CHAINING (?.)
+    // FILTRADO POR BÚSQUEDA Y POR CATEGORÍA
     const query = searchQuery.toLowerCase().trim();
 
-    const categoriasFiltradas = (categorias || []).map(categoria => {
-        const productosFiltrados = (categoria.datos || []).filter(item => {
-            // Evaluamos con ?. y fallback a string vacío '' para evitar undefined
-            const nombre = (item.nombre || '').toLowerCase();
-            const descripcion = (item.descripcion || '').toLowerCase();
+    const productosFiltrados = productos.filter((item) => {
+        // 1. Filtro por texto en nombre o descripción
+        const coincideBusqueda = 
+            (item.nombre || '').toLowerCase().includes(query) ||
+            (item.descripcion || '').toLowerCase().includes(query);
 
-            return nombre.includes(query) || descripcion.includes(query);
-        });
+        // 2. Filtro por categoría seleccionada
+        const coincideCategoria = 
+            selectedCategory === 'todas' || item.categoria === selectedCategory;
 
-        return {
-            ...categoria,
-            datos: productosFiltrados
-        };
-    }).filter(categoria => categoria.datos && categoria.datos.length > 0);
+        return coincideBusqueda && coincideCategoria;
+    });
 
     return (
         <MenuContext.Provider value={{
@@ -65,8 +68,8 @@ export function MenuProvider({ children }) {
             error,
             searchQuery,
             setSearchQuery,
-            categorias,
-            categoriasFiltradas,
+            productos,            // Lista completa
+            productosFiltrados,   // Lista filtrada para mostrar en los componentes
             selectedCategory,       
             setSelectedCategory
         }}>

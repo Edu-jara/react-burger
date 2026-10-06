@@ -10,16 +10,16 @@ const Menu = () => {
     //  Contexto de Favoritos
     const { favoritesCount = 0, isFavorite } = useFavorites();
 
-    //  Contexto del Menú (Extraemos todo en un solo bloque)
+    //  Contexto del Menú (Conectado a Firestore)
     const menuContext = useMenu() || {};
     const {
         cargando,
         error,
-        categorias = [],          // Data cruda completa
-        categoriasFiltradas = [],  // Data filtrada por búsqueda
+        productos = [],          // Data plana completa de Firestore
+        productosFiltrados = [], // Productos ya listos y filtrados para renderizar
         searchQuery = '',
         setSearchQuery = () => { },
-        selectedCategory: categoriaActiva,     // <-- Conectado al contexto global
+        selectedCategory: categoriaActiva,
         setSelectedCategory: setCategoriaActiva
     } = menuContext;
 
@@ -34,11 +34,9 @@ const Menu = () => {
 
     //  Calculamos las secciones según la categoría activa
     const seccionesAmostrar = useMemo(() => {
-        // Caso 1: Pestaña Favoritos activa
+        // Caso 1: Favoritos
         if (categoriaActiva === 'favorites') {
-            const todosLosProductos = categorias.flatMap(cat => cat.datos || []);
-            const itemsFavoritos = todosLosProductos.filter(item => isFavorite(item.id));
-
+            const itemsFavoritos = productos.filter(item => isFavorite(item.id));
             if (itemsFavoritos.length === 0) return [];
 
             return [{
@@ -48,14 +46,22 @@ const Menu = () => {
             }];
         }
 
-        // Caso 2: Pestaña "Todas"
-        if (categoriaActiva === 'todas') {
-            return categoriasFiltradas;
-        }
+        // Caso 2: Agrupar la lista plana de productosFiltrados por categoría
+        const agrupados = productosFiltrados.reduce((acc, producto) => {
+            const catKey = producto.categoria || 'varios';
+            if (!acc[catKey]) {
+                acc[catKey] = {
+                    id: catKey,
+                    titulo: catKey.charAt(0).toUpperCase() + catKey.slice(1), // Capitaliza primera letra
+                    datos: []
+                };
+            }
+            acc[catKey].datos.push(producto);
+            return acc;
+        }, {});
 
-        // Caso 3: Categoría específica
-        return categoriasFiltradas.filter(cat => cat && cat.id === categoriaActiva);
-    }, [categoriaActiva, categorias, categoriasFiltradas, isFavorite]);
+        return Object.values(agrupados);
+    }, [categoriaActiva, productos, productosFiltrados, isFavorite]);
 
     //  PANTALLA DE CARGA
     if (cargando) {
@@ -117,6 +123,7 @@ const Menu = () => {
                     </div>
                 </div>
 
+
                 {/* 2. SUBMENÚ / TABS */}
                 <div className={`${styles.submenu || 'flex gap-2 overflow-x-auto pb-1'} no-scrollbar`}>
                     <button
@@ -124,6 +131,27 @@ const Menu = () => {
                         onClick={() => setCategoriaActiva('todas')}
                     >
                         Todas
+                    </button>
+
+                    <button
+                        className={`${styles.tabBtn} ${categoriaActiva === 'hamburguesas' ? styles.active : ''}`}
+                        onClick={() => setCategoriaActiva('hamburguesas')}
+                    >
+                        Hamburguesas
+                    </button>
+
+                    <button
+                        className={`${styles.tabBtn} ${categoriaActiva === 'pizzas' ? styles.active : ''}`}
+                        onClick={() => setCategoriaActiva('pizzas')}
+                    >
+                        Pizzas
+                    </button>
+
+                    <button
+                        className={`${styles.tabBtn} ${categoriaActiva === 'empanadas' ? styles.active : ''}`}
+                        onClick={() => setCategoriaActiva('empanadas')}
+                    >
+                        Empanadas
                     </button>
 
                     {/* Botón "Favoritos" */}
@@ -138,17 +166,10 @@ const Menu = () => {
                             </span>
                         )}
                     </button>
-
-                    {categoriasFiltradas.map(cat => (
-                        <button
-                            key={cat.id}
-                            className={`${styles.tabBtn} ${categoriaActiva === cat.id ? styles.active : ''}`}
-                            onClick={() => setCategoriaActiva(cat.id)}
-                        >
-                            {cat.titulo}
-                        </button>
-                    ))}
                 </div>
+
+
+
             </div>
 
             {/* CONTENEDOR DE PRODUCTOS */}
@@ -201,7 +222,7 @@ const Menu = () => {
                     ))
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 
