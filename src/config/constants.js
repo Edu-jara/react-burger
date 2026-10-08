@@ -19,13 +19,13 @@ export const SITE_CONFIG = {
 
     // Datos de WhatsApp
     whatsapp: {
-        number: import.meta.env.VITE_WHATSAPP_NUMBER || "",
+        number: import.meta.env.VITE_WHATSAPP_NUMBER || "5492215340285",
         defaultMessage: import.meta.env.VITE_WHATSAPP_DEFAULT_MESSAGE || "Hola, quiero hacer una consulta",
     },
 
     // Información de Contacto y Ubicación
     contacto: {
-        telefono: "+54 11 1234-5678",
+        telefono: "+549 221-5340285",
         direccion: "C. 15 A & Calle 461 B, City Bell",
         ubicacion: "Buenos Aires, Argentina",
         email: "contacto@tudominio.com",

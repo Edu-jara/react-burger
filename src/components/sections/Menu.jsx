@@ -32,6 +32,30 @@ const Menu = () => {
         });
     }, [categoriaActiva]);
 
+    useEffect(() => {
+        // Solo actuamos si hay texto real (más de 1 carácter)
+        if (searchQuery.trim().length > 1) {
+
+            // Esperamos 250ms a que el usuario termine de tipear la palabra
+            const timer = setTimeout(() => {
+                window.scrollTo({
+                    top: 160,
+                    behavior: 'smooth'
+                });
+            }, 250);
+
+            // Limpiamos el timer anterior si sigue tipeando antes de los 250ms
+            return () => clearTimeout(timer);
+        }
+        // Si se limpió la búsqueda (searchQuery está vacío), vuelve arriba de todo
+        else {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }, [searchQuery]);
+
     //  Calculamos las secciones según la categoría activa
     const seccionesAmostrar = useMemo(() => {
         // Caso 1: Favoritos
@@ -91,7 +115,7 @@ const Menu = () => {
                     Sabor & Calidad
                 </span>
                 {/* Tamaño compacto en celular, grande en computadoras */}
-                <h2 className="text-xl md:text-4xl font-extrabold text-white leading-tight mb-2">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-white leading-tight mt-1 mb-1">
                     Nuestra Carta Exclusiva
                 </h2>
                 <div className={styles.decoracionLinea}>

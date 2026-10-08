@@ -33,7 +33,7 @@ export default function ProductCard({ item }) {
                         favorite
                             ? {
                                 scale: [1, 1.35, 0.9, 1],
-                                rotate: [0, -15, 10, -5, 0], // <- Latido con inclinación hacia los costados
+                                rotate: [0, -15, 10, -5, 0], //  Latido con inclinación hacia los costados
                             }
                             : { scale: 1, rotate: 0 }
                     }
@@ -48,9 +48,9 @@ export default function ProductCard({ item }) {
                             addToast(`Quitado de Favoritos`, '🤍');
                         }
                     }}
-                    className={`absolute top-3 right-3 z-10 p-2 rounded-full backdrop-blur-md border transition-colors duration-300 cursor-pointer ${favorite
-                        ? 'opacity-100 bg-rose-500/20 border-rose-500/50 text-rose-500'
-                        : 'opacity-0 group-hover:opacity-100 bg-zinc-950/60 border-zinc-700/50 text-zinc-400 hover:text-white'
+                    className={`absolute top-3 right-3 z-10 p-2 rounded-full backdrop-blur-md border transition-all duration-300 cursor-pointer ${favorite
+                            ? 'opacity-100 bg-rose-500/20 border-rose-500/50 text-rose-500'
+                            : 'opacity-80 md:opacity-40 md:hover:opacity-100 bg-zinc-950/70 border-zinc-700/60 text-zinc-300 hover:text-white'
                         }`}
                     aria-label={favorite ? "Quitar de favoritos" : "Agregar a favoritos"}
                 >

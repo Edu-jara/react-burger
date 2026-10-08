@@ -60,17 +60,27 @@ export default function Contacto() {
     };
 
     const abrirWhatsApp = () => {
-        if (!whatsapp.number) {
+        const numero = import.meta.env.VITE_WHATSAPP_NUMBER || whatsapp?.number;
+
+        if (!numero) {
             console.warn('Número de WhatsApp no configurado en SITE_CONFIG');
             return;
         }
-        const url = `https://wa.me/${whatsapp.number}?text=${encodeURIComponent(whatsapp.defaultMessage)}`;
-        window.open(url, '_blank', 'noopener,noreferrer');
+        // Limpiamos por si acaso espacios o guiones accidentalmente agregados
+        const cleanNumber = String(numero).replace(/\D/g, '');
+
+        //  Obtiene el mensaje por defecto de forma segura
+        const mensaje = whatsapp?.defaultMessage || '';
+
+        const url = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(whatsapp.defaultMessage)}`;
+        // Asignación directa para evitar bloqueo de pop-ups en celulares:
+        window.location.href = url;
     };
+
 
     const manejarEnvio = async (e) => {
         e.preventDefault();
-        
+
         // Validación defensiva: verificar credenciales de EmailJS
         if (!emailConfig.serviceId || !emailConfig.templateId || !emailConfig.publicKey) {
             console.error('Faltan configurar variables de entorno de EmailJS en .env');
