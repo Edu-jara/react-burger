@@ -122,6 +122,8 @@ export default function Nosotros() {
 
                 <div
                     onScroll={handleScroll}
+                    // Al entrar con el mouse en la grilla (PC), quitamos la tarjeta seleccionada fija
+                    onMouseEnter={() => setIndexActivo(null)}
                     className="flex gap-4 overflow-x-auto snap-x snap-mandatory pt-3 pb-6 px-2 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-4 md:px-0 scrollbar-none">
                     {valores.map((item, index) => (
                         <motion.div
@@ -136,7 +138,7 @@ export default function Nosotros() {
                                 : 'border-zinc-800 md:hover:border-amber-500 md:hover:shadow-[0_0_20px_rgba(245,158,11,0.25)]'
                                 }`}
                         >
-                            {/* 1. Imagen de fondo con zoom en hover */}
+                            {/*  Imagen de fondo con zoom en hover */}
                             <img
                                 src={item.imagen}
                                 alt={item.titulo}
@@ -144,10 +146,10 @@ export default function Nosotros() {
                                 loading="lazy"
                             />
 
-                            {/* 2. Capa oscura (Overlay) para legibilidad */}
+                            {/*  Capa oscura (Overlay) para legibilidad */}
                             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-zinc-950/30 group-hover:via-zinc-950/70 transition-colors duration-500" />
 
-                            {/* 3. Contenido de la tarjeta (Al frente con z-10) */}
+                            {/*  Contenido de la tarjeta (Al frente con z-10) */}
                             <div className="relative z-10">
                                 <h4 className={`text-lg font-bold mb-1 transition-colors ${indexActivo === index ? 'text-amber-400' : 'text-white md:group-hover:text-amber-400'
                                     }`}>
