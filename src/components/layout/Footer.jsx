@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SITE_CONFIG } from '../../config/constants';
+import { EquipoDrawer } from '../sections/EquipoDrawer';
 
 export default function Footer() {
     const currentYear = new Date().getFullYear();
+    //  Declarar el estado de visibilidad del Drawer
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const { nombre, footerNav, contacto } = SITE_CONFIG;
 
     return (
         <footer className="bg-zinc-900 border-t border-zinc-800 text-zinc-400 py-8">
             <div className="max-w-7xl mx-auto px-4 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
-                
+
                 {/* Copyright & Marca */}
                 <p className="text-sm text-center md:text-left">
                     © {currentYear}{' '}
@@ -65,7 +68,20 @@ export default function Footer() {
                     )}
                 </div>
 
+
+                {/*  El botón cambia el estado a true para abrir el panel */}
+                <button
+                    onClick={() => setIsDrawerOpen(true)}
+                    className="text-xs text-zinc-400 hover:text-amber-400 transition-colors underline decoration-amber-500/30 underline-offset-4 cursor-pointer"
+                >
+                    Desarrollado por el Equipo Dev ↗
+                </button>
             </div>
+            {/* Componente EquipoDrawer integrado */}
+            <EquipoDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+            />
         </footer>
     );
 }
