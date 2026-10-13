@@ -1,10 +1,17 @@
 /* Variables locales y contenedor principal */
+/* Contenedor principal adaptado */
 .containerMenu {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: 1rem 0.75rem; /* 📱 CELULAR: Margen lateral más fino para que entren bien las 2 columnas */
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
 
+/* 💻 PC / DESKTOP: Recupera el espacio amplio a los lados */
+@media (min-width: 768px) {
+    .containerMenu {
+        padding: 2rem 1.5rem;
+    }
 }
 
 /* Contenedor estético para el encabezado de la sección */
@@ -82,39 +89,56 @@
     padding-bottom: 0.2rem;
 }
 
-/* Grilla Responsiva Corregida para Evitar Estiramientos Exagerados */
+/* Grilla Responsiva */
 .gridProductos {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 300px));
-    gap: 2rem;
-    justify-content: start;
+    /* 📱 CELULAR: Forzamos 2 columnas exactas */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 0.5rem;   /* Bajamos un poquito el espacio entre tarjetas para que respiren */
+    padding: 0.25rem; /* Reducimos el padding interno para ganar espacio horizontal */
 }
 
-/* Tarjeta (Card) con sombra y elevación */
+/* Ajuste para pantallas grandes (Tablets y Desktop) */
+@media (min-width: 768px) {
+    .gridProductos {
+        grid-template-columns: repeat(4, 1fr); /* 💻 PC: 4 columnas */
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+}
+/* Tarjeta ajustada a la grilla */
 .card {
-    background-color: #ffffff;
-    border-radius: 16px;
+    background-color: #18181b;
+    /* Estilo oscuro acorde al proyecto */
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    
+    width: 100%;
+    min-width: 0; /* Evita que el contenido ensanche o deforme la columna */
+    /*Forza a que todas midan exactamente lo mismo y bloquea cualquier expansión */
+    
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+    border-color: rgba(245, 158, 11, 0.5);
+    /* Borde amber en hover */
 }
 
-/* Contenedor de Imagen y Efecto Zoom */
+/* Contenedor de Imagen con Ratio 4:3 (Proporción Ropa) */
 .imageContainer {
     width: 100%;
-    height: 200px;
+    /* Reemplazamos el height fijo por aspect-ratio vertical */
+    aspect-ratio: 4 / 3;
     overflow: hidden;
-    background-color: #f5f5f5;
+    background-color: #27272a;
     position: relative;
-    /* ubica el corazón adentro */
 }
 
 .imageContainer img {
@@ -125,41 +149,48 @@
 }
 
 .card:hover .imageContainer img {
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
-/* Contenido Interno de la Tarjeta */
+/* Contenido Interno Compacto */
 .cardContent {
-    padding: 1.25rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    justify-content: space-between;
 }
 
 .cardContent h4 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0 0 0.5rem 0;
+    font-size: 0.85rem;
+    /* Tamaño optimizado para 2 columnas en mobile */
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 0.25rem 0;
+    /* Recorta texto si es muy largo para no desalinear tarjetas */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cardContent p {
-    font-size: 0.9rem;
-    color: #666666;
-    line-height: 1.4;
-    margin: 0 0 1.25rem 0;
-    flex-grow: 1;
+    font-size: 0.75rem;
+    color: #a1a1aa;
+    margin: 0 0 0.4rem 0;
+
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Corta la descripción a 2 líneas máximo */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-/* Precio Destacado */
+/* Precio y Botón en la misma línea */
 .precio {
-    font-size: 1.25rem;
+    font-size: 0.95rem;
     font-weight: 800;
-    color: #e65100;
-    background-color: #fff3e0;
-    padding: 0.4rem 0.8rem;
-    border-radius: 8px;
-    align-self: flex-start;
+    color: #fbbf24;
+    /* Color Amber */
 }
 
 
@@ -171,74 +202,41 @@
     overflow-x: auto;
     padding-bottom: 0.75rem;
     margin-top: 0.5rem;
-
+    /* Suaviza el scroll horizontal en celulares */
+    -webkit-overflow-scrolling: touch; 
 }
 
+/* 📱 CELULAR POR DEFECTO: Botones compactos y texto cómodo */
 .tabBtn {
-    background-color: #f0f0f0;
-    border: none;
-    padding: 0.4rem 1.2rem;
-    font-size: 0.95rem;
+    background-color: #27272a; /* Oscuro acorde al tema */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.35rem 0.85rem;  /* Medida ideal para celular */
+    font-size: 0.85rem;        /* Tamaño de fuente optimizado */
     font-weight: 600;
-    color: #555555;
+    color: #a1a1aa;
     border-radius: 30px;
     cursor: pointer;
+    white-space: nowrap;       /* Evita que el texto del botón se rompa en 2 líneas */
     transition: all 0.25s ease;
 }
 
-/* Solo para Celulares (pantallas chicas) */
-@media (max-width: 768px) {
-    .tabBtn {
-        padding: 0.2rem 0.7rem;
-        /* Achica el botón (arriba/abajo: 0.4rem, lados: 0.9rem) */
-        font-size: 0.85rem;
-        /* Achica levemente la letra para que entre mejor */
-    }
-}
-
 .tabBtn:hover {
-    background-color: #e0e0e0;
-    color: #1a1a1a;
+    background-color: #3f3f46;
+    color: #ffffff;
 }
 
 .tabBtn.active {
     background-color: #ff6b00;
     color: #ffffff;
+    border-color: #ff6b00;
     box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
 }
 
-
-/*  ESTADO BASE (Para celulares y pantallas táctiles) */
-.heartBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888888;
-    /* Gris visible para que se note en el celular */
-    opacity: 1;
-    /* NUNCA transparente en el celular */
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-/* Estado Activo / Favorito Seleccionado (Rojo en Celular y PC) */
-.heartBtn.active {
-    color: #ff2b56;
-    /* Rojo o rosa brillante */
-}
-
-/*  EFECTO HOVER SOLO PARA PC (Dispositivos con Cursor/Mouse) */
-@media (hover: hover) {
-
-    /* Si en PC querés que esté sutil o semi-oculto hasta pasar el mouse */
-    .heartBtn:not(.active) {
-        opacity: 0.6;
-        /* O la opacidad/color que prefieras para PC */
-    }
-
-    .heartBtn:hover {
-        opacity: 1;
-        color: #ff2b56;
-        transform: scale(1.15);
+/* 💻 PC / DESKTOP (A partir de 768px): Botones con más relleno y letra más grande */
+@media (min-width: 768px) {
+    .tabBtn {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.95rem;
     }
 }
 
@@ -263,4 +261,11 @@
 
 .heartPop {
     animation: heartPop 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.28);
+}
+
+
+/* 🛠️ BLINDAJE PARA FRAMER MOTION DENTRO DE LA GRILLA */
+.gridProductos > div {
+    width: 100%;
+    min-width: 0;
 }
