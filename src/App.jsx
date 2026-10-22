@@ -8,6 +8,8 @@ import { CartProvider } from './context/CartContext';
 import { ToastProvider } from './context/ToastContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 
+import ControlGestion from './components/sections/ControlGestion';
+
 // Layout 
 import Layout from './components/layout/Layout';
 
@@ -27,14 +29,14 @@ function App() {
               {/* Layout envuelve la estructura con Navbar, Footer, Outlet y Flotantes */}
               <Route path="/" element={<Layout />}>
                 {/* Ruta Principal: Hero + Nosotros */}
-                <Route index element={<InicioPage />} />
-
+                <Route index element={<InicioPage />} />                
                 {/* Ruta Menú */}
                 <Route path="menu" element={<MenuPage />} />
-
                 {/* Ruta Contacto */}
                 <Route path="contacto" element={<ContactoPage />} />
               </Route>
+              <Route path="control" element={<ControlGestion />} />
+
             </Routes>
           </FavoritesProvider>
         </CartProvider>

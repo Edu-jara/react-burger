@@ -2,7 +2,46 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 
+import { db } from '../../firebase/config.js';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+
 export default function CartDrawer() {
+    // Estados para el cupón
+    const [codigoCupon, setCodigoCupon] = useState('');
+    const [porcentajeDescuento, setPorcentajeDescuento] = useState(0);
+    const [mensajeCupon, setMensajeCupon] = useState('');
+
+    // Función para validar el cupón en Firebase
+    const aplicarCupon = async () => {
+        if (!codigoCupon) return;
+
+        try {
+            const q = query(collection(db, "cupones"), where("codigo", "==", codigoCupon.trim().toUpperCase()));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                const dataCupon = querySnapshot.docs[0].data();
+
+                // Extraemos el valor asegurando que sea un número (acepta 'descuento' o 'porcentaje')
+                const valorDescuento = Number(dataCupon.descuento || dataCupon.porcentaje || 0);
+
+                if (valorDescuento > 0) {
+                    setPorcentajeDescuento(valorDescuento);
+                    setMensajeCupon(`¡${valorDescuento}% de descuento aplicado!`);
+                } else {
+                    setMensajeCupon("El cupón no tiene un porcentaje válido");
+                    setPorcentajeDescuento(0);
+                }
+            } else {
+                setMensajeCupon("El cupón no existe o expiró");
+                setPorcentajeDescuento(0);
+            }
+        } catch (error) {
+            console.error("Error al buscar cupón:", error);
+            setMensajeCupon("Error al validar el cupón");
+        }
+    };
+
     const {
         cart,
         isCartOpen,
@@ -20,6 +59,10 @@ export default function CartDrawer() {
         metodoPago: 'Efectivo',
         notas: ''
     });
+
+    // Cálculo del descuento y el total final
+    const descuentoMonto = (cartTotal * porcentajeDescuento) / 100;
+    const totalConDescuento = cartTotal - descuentoMonto;
 
     // Cierre del drawer mediante la tecla Escape
     useEffect(() => {
@@ -43,7 +86,20 @@ export default function CartDrawer() {
             return;
         }
 
-        sendOrderToWhatsApp(form);
+        // Empaquetamos los datos del formulario junto con las cuentas matemáticas
+        const pedidoCompleto = {
+            ...form,
+            subtotal: cartTotal,
+            descuentoPorcentaje: porcentajeDescuento,
+            montoDescuento: descuentoMonto,
+            totalFinal: totalConDescuento,
+            codigoUsado: codigoCupon || 'Ninguno'
+        };
+
+        // Enviamos el paquete completo a la función de WhatsApp
+        sendOrderToWhatsApp(pedidoCompleto);
+
+        // Limpiamos todo el carrito, formulario y estados del cupón
         clearCart();
         setForm({
             nombre: '',
@@ -51,8 +107,13 @@ export default function CartDrawer() {
             metodoPago: 'Efectivo',
             notas: ''
         });
+        setCodigoCupon('');
+        setPorcentajeDescuento(0);
+        setMensajeCupon('');
         setIsCartOpen(false);
     };
+
+
 
     return (
         <AnimatePresence>
@@ -150,12 +211,51 @@ export default function CartDrawer() {
                         {/* Footer: Formulario & Envío de Pedido */}
                         {cart.length > 0 && (
                             <div className="p-4 border-t border-zinc-800 bg-zinc-950 space-y-3">
-                                <div className="flex items-center justify-between text-base font-extrabold text-white">
-                                    <span>Total:</span>
-                                    <span className="text-amber-500 text-lg">${cartTotal.toLocaleString('es-AR')}</span>
+                                <div className="space-y-1">
+                                    {porcentajeDescuento > 0 && (
+                                        <>
+                                            <div className="flex items-center justify-between text-xs text-zinc-400 line-through">
+                                                <span>Subtotal:</span>
+                                                <span>${cartTotal.toLocaleString('es-AR')}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-xs text-emerald-400 font-semibold">
+                                                <span>Descuento ({porcentajeDescuento}%):</span>
+                                                <span>-${descuentoMonto.toLocaleString('es-AR')}</span>
+                                            </div>
+                                        </>
+                                    )}
+                                    <div className="flex items-center justify-between text-base font-extrabold text-white">
+                                        <span>Total:</span>
+                                        <span className="text-amber-500 text-lg">${totalConDescuento.toLocaleString('es-AR')}</span>
+                                    </div>
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="space-y-2 pt-2 border-t border-zinc-800">
+
+                                    {/* --- Cupón de Descuento --- */}
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            placeholder="Código de cupón"
+                                            value={codigoCupon}
+                                            onChange={(e) => setCodigoCupon(e.target.value.toUpperCase())}
+                                            className="w-2/3 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 uppercase"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={aplicarCupon}
+                                            className="w-1/3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-3 py-2 rounded-lg text-xs transition-colors cursor-pointer"
+                                        >
+                                            Aplicar
+                                        </button>
+                                    </div>
+                                    {mensajeCupon && (
+                                        <p className={`text-xs ${porcentajeDescuento > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                                            {mensajeCupon}
+                                        </p>
+                                    )}
+
+
                                     <input
                                         type="text"
                                         name="nombre"
@@ -201,15 +301,16 @@ export default function CartDrawer() {
                                     >
                                         <span>📲</span> Enviar Pedido a WhatsApp
                                     </button>
-                                </form>
 
-                                <button
-                                    type="button"
-                                    onClick={clearCart}
-                                    className="w-full text-center text-xs text-zinc-500 hover:text-zinc-300 transition-colors py-1 cursor-pointer"
-                                >
-                                    Vaciar Carrito
-                                </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={clearCart}
+                                        className="w-full text-center text-xs text-zinc-500 hover:text-zinc-300 transition-colors py-1 cursor-pointer"
+                                    >
+                                        Vaciar Carrito
+                                    </button>
+                                </form>
                             </div>
                         )}
                     </motion.div>

@@ -82,11 +82,11 @@ export function CartProvider({ children }) {
         return item ? item.quantity : 0;
     }, [cart]);
 
-    // 5. Cálculos derivados con Memoización
+    // 5. Cálculos derivados con Memorización
     const itemCount = useMemo(() => {
         return cart.reduce((total, item) => total + item.quantity, 0);
     }, [cart]);
-    
+
     const cartTotal = useMemo(() => {
         return cart.reduce((total, item) => {
             const precioNum = Number(item.precio) || 0;
@@ -116,7 +116,17 @@ export function CartProvider({ children }) {
         });
 
         message += `------------------------------------%0A`;
-        message += `💰 *TOTAL:* $${cartTotal.toLocaleString('es-AR')}%0A`;
+
+        // Si usaron cupón, mostramos el subtotal, el descuento y el total final
+        if (customerData.descuentoPorcentaje > 0) {
+            message += `📦 *Subtotal:* $${customerData.subtotal.toLocaleString('es-AR')}%0A`;
+            message += `🎟️ *Cupón (${customerData.codigoUsado}):* -${customerData.descuentoPorcentaje}% (-$${customerData.montoDescuento.toLocaleString('es-AR')})%0A`;
+            message += `💰 *TOTAL FINAL:* $${customerData.totalFinal.toLocaleString('es-AR')}%0A`;
+        } else {
+            // Si NO usaron cupón, muestra el total normal de siempre
+            message += `💰 *TOTAL:* $${cartTotal.toLocaleString('es-AR')}%0A`;
+        }
+
         message += `------------------------------------`;
 
         window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
@@ -136,15 +146,15 @@ export function CartProvider({ children }) {
         cartTotal,
         sendOrderToWhatsApp
     }), [
-        cart, 
-        isCartOpen, 
-        addToCart, 
-        removeFromCart, 
-        updateQuantity, 
-        clearCart, 
-        getItemQuantity, 
-        itemCount, 
-        cartTotal, 
+        cart,
+        isCartOpen,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        getItemQuantity,
+        itemCount,
+        cartTotal,
         sendOrderToWhatsApp
     ]);
 
