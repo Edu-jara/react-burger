@@ -2,9 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 
 // 1. Importamos la conexión de Firebase y los métodos de Firestore
-import { db } from '../firebase/config'; 
-import { collection, getDocs } from 'firebase/firestore';
-
+import { db } from '../firebase/config';
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 
 
@@ -19,47 +18,46 @@ export function MenuProvider({ children }) {
     const [searchQuery, setSearchQuery] = useState('');
 
     const [selectedCategory, setSelectedCategory] = useState('todas');
-
-    //  PETICIÓN AL MONTAR
     useEffect(() => {
         setCargando(true);
-
-        // Referencia a la colección en Firestore
         const productosRef = collection(db, "productos nacionales");
 
+        // Traemos todos los productos sin el where de Firebase
         getDocs(productosRef)
             .then((resp) => {
-                // Mapeamos los documentos de Firestore agregando el id
                 const listaProductos = resp.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data()
                 }));
-
-                console.log("✅ Productos cargados desde Firestore:", listaProductos);
+                console.log("✅ Productos cargados:", listaProductos);
                 setProductos(listaProductos);
             })
             .catch((err) => {
-                console.error("❌ Falló la carga desde Firestore:", err.message);
+                console.error("❌ Error:", err.message);
                 setError(err.message);
             })
             .finally(() => {
                 setCargando(false);
             });
     }, []);
+    
     // FILTRADO POR BÚSQUEDA Y POR CATEGORÍA
-    const query = searchQuery.toLowerCase().trim();
+    const textoBusqueda = searchQuery.toLowerCase().trim();
 
     const productosFiltrados = productos.filter((item) => {
-        // 1. Filtro por texto en nombre o descripción
-        const coincideBusqueda = 
-            (item.nombre || '').toLowerCase().includes(query) ||
-            (item.descripcion || '').toLowerCase().includes(query);
+        // 1. Filtro por estado activo (si no tiene la propiedad o es true, pasa; si es false, se oculta)
+        const estaActivo = item.activo !== false;
 
-        // 2. Filtro por categoría seleccionada
-        const coincideCategoria = 
+        // 2. Filtro por texto en nombre o descripción (usando textoBusqueda)
+        const coincideBusqueda =
+            (item.nombre || '').toLowerCase().includes(textoBusqueda) ||
+            (item.descripcion || '').toLowerCase().includes(textoBusqueda);
+
+        // 3. Filtro por categoría seleccionada
+        const coincideCategoria =
             selectedCategory === 'todas' || item.categoria === selectedCategory;
 
-        return coincideBusqueda && coincideCategoria;
+        return estaActivo && coincideBusqueda && coincideCategoria;
     });
 
     return (
@@ -70,7 +68,7 @@ export function MenuProvider({ children }) {
             setSearchQuery,
             productos,            // Lista completa
             productosFiltrados,   // Lista filtrada para mostrar en los componentes
-            selectedCategory,       
+            selectedCategory,
             setSelectedCategory
         }}>
             {children}
