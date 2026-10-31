@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SITE_CONFIG } from '../../config/constants';
-import { EquipoDrawer } from '../sections/EquipoDrawer';
+import { EquipoDrawer } from '../drawers/EquipoDrawer';
 
 export default function Footer() {
     const currentYear = new Date().getFullYear();

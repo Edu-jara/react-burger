@@ -414,7 +414,7 @@ export default function GestionProductos() {
                                     key={prod.id}
                                     className={`flex flex-col gap-4 p-4 rounded-lg border transition-all duration-300 ${prod.activo !== false
                                         ? 'bg-zinc-950 border-zinc-800 opacity-100' // Activo: Normal y brillante
-                                        : 'bg-zinc-950/30 border-zinc-900 opacity-30' // Inactivo: Atenuado y opaco
+                                        : 'bg-zinc-950/30 border-zinc-500 opacity-30' // Inactivo: Atenuado y opaco
                                         }`}
                                 >
                                     <div className="flex flex-col gap-1">

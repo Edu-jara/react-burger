@@ -5,8 +5,10 @@ import { useMenu } from '../../context/MenuContext';
 import { useCart } from '../../context/CartContext';
 import { useFavorites } from '../../context/FavoritesContext';
 
-export default function Navbar() {
+
+export default function Navbar ({ onOpenCupones }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+   
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -21,7 +23,7 @@ export default function Navbar() {
 
         if (location.pathname === '/') {
             if (e && e.preventDefault) e.preventDefault();
-            
+
             // Un breve timeout asegura que el render de React no cancele el scroll en móvil
             setTimeout(() => {
                 window.scrollTo({
@@ -63,8 +65,8 @@ export default function Navbar() {
 
                 {/* Logo + Enlaces PC */}
                 <div className="flex items-center gap-8">
-                    <Link 
-                        to="/" 
+                    <Link
+                        to="/"
                         onClick={handleInicioClick}
                         className="text-xl font-black text-amber-500 tracking-wider"
                     >
@@ -114,6 +116,17 @@ export default function Navbar() {
 
                 {/* Acciones */}
                 <div className="flex items-center gap-3">
+
+                    {/*  BOTÓN DE CUPONES EN LA BARRA PRINCIPAL */}
+                    <button
+                        type="button"
+                        onClick={onOpenCupones}
+                        className="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold px-3 py-2 rounded-xl text-sm flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
+                        aria-label="Ver cupones de descuento"
+                    >
+                        <span>🔥</span>
+                        <span className="hidden sm:inline">Cupones</span>
+                    </button>
 
                     {/* Botón Favoritos */}
                     <button
@@ -171,8 +184,20 @@ export default function Navbar() {
                             {link.label}
                         </NavLink>
                     ))}
+
+                    {/*  OPCIÓN DE CUPONES ADENTRO DEL MENÚ MÓVIL */}
+                    <button
+                        onClick={() => {
+                            setIsMenuOpen(false);
+                            onOpenCupones();
+                        }}
+                        className="w-full text-left font-bold text-amber-400 pt-2 border-t border-zinc-800 flex items-center gap-2"
+                    >
+                        <span>🔥</span> Ver Cupones Activos
+                    </button>
                 </nav>
             )}
+    
         </header>
     );
 }

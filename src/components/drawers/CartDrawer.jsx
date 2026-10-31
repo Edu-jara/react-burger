@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../context/CartContext.jsx';
 
 import { db } from '../../firebase/config.js';
 import { collection, query, where, getDocs } from 'firebase/firestore';
