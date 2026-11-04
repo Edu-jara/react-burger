@@ -5,10 +5,32 @@ import { useMenu } from '../../context/MenuContext';
 import { useCart } from '../../context/CartContext';
 import { useFavorites } from '../../context/FavoritesContext';
 
+import { useAuth } from '../../context/AuthContext';
 
-export default function Navbar ({ onOpenCupones }) {
+
+export default function Navbar({ onOpenCupones }) {
+
+    //  Extraemos el usuario actual y la función de logout desde el contexto
+    const { user, logout } = useAuth();
+    
+
+    //  Función para manejar el cierre de sesión
+    const handleLogout = async () => {
+
+        // Mostramos un cartel nativo de confirmación
+        const confirmar = window.confirm("¿Desea cerrar sesión?");
+        
+        if (!confirmar) return; // Si el usuario pone "Cancelar", no hacemos nada
+        try {
+            await logout();
+            navigate('/'); // Al cerrar sesión, lo enviamos al Inicio
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    };
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-   
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -59,6 +81,12 @@ export default function Navbar ({ onOpenCupones }) {
         navigate('/menu');
     };
 
+    // Combinamos los links normales de la config con el de administración si el usuario es admin
+    const navLinks = [
+        ...SITE_CONFIG.mainNav,
+        ...(user?.rol === 'admin' ? [{ to: '/control', label: 'Gestión' }] : [])
+    ];
+
     return (
         <header className="fixed top-0 left-0 w-full z-50 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -74,8 +102,9 @@ export default function Navbar ({ onOpenCupones }) {
                     </Link>
 
                     {/* Enlaces PC */}
+                    {/* Enlaces PC (Mapeando el array dinámico navLinks) */}
                     <nav className="hidden md:flex items-center gap-6">
-                        {SITE_CONFIG.mainNav.map((link) => (
+                        {navLinks.map((link) => (
                             <NavLink
                                 key={link.to}
                                 to={link.to}
@@ -115,6 +144,8 @@ export default function Navbar ({ onOpenCupones }) {
                 </div>
 
                 {/* Acciones */}
+                {/* AUTENTICACIÓN EN ESCRITORIO */}
+                
                 <div className="flex items-center gap-3">
 
                     {/*  BOTÓN DE CUPONES EN LA BARRA PRINCIPAL */}
@@ -154,6 +185,32 @@ export default function Navbar ({ onOpenCupones }) {
                         </span>
                     </button>
 
+                    <div className="hidden md:flex items-center gap-2 border-l border-zinc-800 pl-3">
+                    {user ? (
+                        // Si el usuario ESTÁ logueado, mostramos su mail y el botón Salir
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs text-zinc-400 max-w-[120px] truncate" title={user.email}>
+                                {user.email}
+                            </span>
+                            <button
+                                onClick={handleLogout}
+                                className="bg-zinc-800 hover:bg-red-600/20 hover:text-red-400 text-zinc-300 text-xs font-bold px-2.5 py-2 rounded-xl transition-colors cursor-pointer"
+                            >
+                                Salir
+                            </button>
+                        </div>
+                    ) : (
+                        // Si NO hay nadie logueado, mostramos el botón para ir al Login
+                        <Link
+                            to="/login"
+                            className="bg-zinc-900 hover:bg-zinc-800 text-amber-500 border border-zinc-800 text-xs font-bold px-3 py-2 rounded-xl transition-colors"
+                        >
+                            Iniciar Sesión
+                        </Link>
+                    )}
+                </div>
+
+
                     {/* Menú Hamburguesa Celular */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -165,10 +222,11 @@ export default function Navbar ({ onOpenCupones }) {
                 </div>
             </div>
 
-            {/* Menú desplegable Móvil (Mapeado con soporte para Inicio) */}
+            
+           {/* Menú desplegable Móvil (Mapeado con soporte para Inicio y Gestión) */}
             {isMenuOpen && (
                 <nav className="md:hidden bg-zinc-900 border-b border-zinc-800 px-4 py-4 space-y-3">
-                    {SITE_CONFIG.mainNav.map((link) => (
+                    {navLinks.map((link) => (
                         <NavLink
                             key={link.to}
                             to={link.to}
@@ -185,19 +243,46 @@ export default function Navbar ({ onOpenCupones }) {
                         </NavLink>
                     ))}
 
-                    {/*  OPCIÓN DE CUPONES ADENTRO DEL MENÚ MÓVIL */}
+                    {/* OPCIÓN DE CUPONES ADENTRO DEL MENÚ MÓVIL */}
                     <button
                         onClick={() => {
                             setIsMenuOpen(false);
                             onOpenCupones();
                         }}
-                        className="w-full text-left font-bold text-amber-400 pt-2 border-t border-zinc-800 flex items-center gap-2"
+                        className="w-full text-left font-bold text-amber-400 pt-2 border-t border-zinc-800 flex items-center gap-2 cursor-pointer"
                     >
                         <span>🔥</span> Ver Cupones Activos
                     </button>
+
+                    {/* AUTENTICACIÓN MÓVIL */}
+                    <div className="pt-3 border-t border-zinc-800">
+                        {user ? (
+                            <div className="space-y-2">
+                                <p className="text-xs text-zinc-400 truncate">Conectado: {user.email}</p>
+                                <button
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        handleLogout();
+                                    }}
+                                    className="w-full bg-red-500/10 text-red-400 font-bold text-xs py-2 rounded-xl text-center cursor-pointer"
+                                >
+                                    Cerrar Sesión
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                to="/login"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="block w-full bg-amber-500 text-zinc-950 font-bold text-xs py-2 rounded-xl text-center"
+                            >
+                                Iniciar Sesión
+                            </Link>
+                        )}
+                    </div>
                 </nav>
             )}
-    
+            
+
         </header>
     );
 }
