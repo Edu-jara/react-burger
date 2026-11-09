@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, setPersistence, browserSessionPersistence } from "firebase/auth"; // <--- Importamos las funciones de persistencia
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -16,5 +16,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+
+// 🔒 Cambiamos la persistencia a modo sesión de pestaña: 
+// Al cerrar el navegador o la pestaña, la sesión se destruye y te pedirá loguearte de nuevo.
+setPersistence(auth, browserSessionPersistence).catch((error) => {
+    console.error("Error configurando la persistencia de auth:", error);
+});
+
 export const db = getFirestore(app);
 export const storage = getStorage(app);

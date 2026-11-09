@@ -12,14 +12,14 @@ export default function Navbar({ onOpenCupones }) {
 
     //  Extraemos el usuario actual y la función de logout desde el contexto
     const { user, logout } = useAuth();
-    
+
 
     //  Función para manejar el cierre de sesión
     const handleLogout = async () => {
 
         // Mostramos un cartel nativo de confirmación
         const confirmar = window.confirm("¿Desea cerrar sesión?");
-        
+
         if (!confirmar) return; // Si el usuario pone "Cancelar", no hacemos nada
         try {
             await logout();
@@ -145,18 +145,19 @@ export default function Navbar({ onOpenCupones }) {
 
                 {/* Acciones */}
                 {/* AUTENTICACIÓN EN ESCRITORIO */}
-                
+
                 <div className="flex items-center gap-3">
 
                     {/*  BOTÓN DE CUPONES EN LA BARRA PRINCIPAL */}
+                    {/*  BOTÓN DE CUPONES (Oculto en celular, visible en PC) */}
                     <button
                         type="button"
                         onClick={onOpenCupones}
-                        className="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold px-3 py-2 rounded-xl text-sm flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
+                        className="hidden sm:flex bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold px-3 py-2 rounded-xl text-sm items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
                         aria-label="Ver cupones de descuento"
                     >
                         <span>🔥</span>
-                        <span className="hidden sm:inline">Cupones</span>
+                        <span>Cupones</span>
                     </button>
 
                     {/* Botón Favoritos */}
@@ -186,29 +187,29 @@ export default function Navbar({ onOpenCupones }) {
                     </button>
 
                     <div className="hidden md:flex items-center gap-2 border-l border-zinc-800 pl-3">
-                    {user ? (
-                        // Si el usuario ESTÁ logueado, mostramos su mail y el botón Salir
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs text-zinc-400 max-w-[120px] truncate" title={user.email}>
-                                {user.email}
-                            </span>
-                            <button
-                                onClick={handleLogout}
-                                className="bg-zinc-800 hover:bg-red-600/20 hover:text-red-400 text-zinc-300 text-xs font-bold px-2.5 py-2 rounded-xl transition-colors cursor-pointer"
+                        {user ? (
+                            // Si el usuario ESTÁ logueado, mostramos su mail y el botón Salir
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs text-zinc-400 max-w-[120px] truncate" title={user.email}>
+                                    {user.email}
+                                </span>
+                                <button
+                                    onClick={handleLogout}
+                                    className="bg-zinc-800 hover:bg-red-600/20 hover:text-red-400 text-zinc-300 text-xs font-bold px-2.5 py-2 rounded-xl transition-colors cursor-pointer"
+                                >
+                                    Salir
+                                </button>
+                            </div>
+                        ) : (
+                            // Si NO hay nadie logueado, mostramos el botón para ir al Login
+                            <Link
+                                to="/login"
+                                className="bg-zinc-900 hover:bg-zinc-800 text-amber-500 border border-zinc-800 text-xs font-bold px-3 py-2 rounded-xl transition-colors"
                             >
-                                Salir
-                            </button>
-                        </div>
-                    ) : (
-                        // Si NO hay nadie logueado, mostramos el botón para ir al Login
-                        <Link
-                            to="/login"
-                            className="bg-zinc-900 hover:bg-zinc-800 text-amber-500 border border-zinc-800 text-xs font-bold px-3 py-2 rounded-xl transition-colors"
-                        >
-                            Iniciar Sesión
-                        </Link>
-                    )}
-                </div>
+                                Iniciar Sesión
+                            </Link>
+                        )}
+                    </div>
 
 
                     {/* Menú Hamburguesa Celular */}
@@ -222,8 +223,8 @@ export default function Navbar({ onOpenCupones }) {
                 </div>
             </div>
 
-            
-           {/* Menú desplegable Móvil (Mapeado con soporte para Inicio y Gestión) */}
+
+            {/* Menú desplegable Móvil (Mapeado con soporte para Inicio y Gestión) */}
             {isMenuOpen && (
                 <nav className="md:hidden bg-zinc-900 border-b border-zinc-800 px-4 py-4 space-y-3">
                     {navLinks.map((link) => (
@@ -281,7 +282,7 @@ export default function Navbar({ onOpenCupones }) {
                     </div>
                 </nav>
             )}
-            
+
 
         </header>
     );

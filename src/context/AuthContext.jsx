@@ -9,6 +9,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [roleLoading, setRoleLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -39,15 +40,16 @@ export const AuthProvider = ({ children }) => {
                         rol: 'cliente'
                     });
                 }
-            } else {
+        } else {
                 setUser(null);
             }
+            // 🛑 Borramos el setTimeout de 2 segundos de acá adentro
             setLoading(false);
+            setRoleLoading(false);
         });
 
         return () => unsubscribe();
     }, []);
-
     const login = (email, password) => {
         return signInWithEmailAndPassword(auth, email, password);
     };
@@ -57,7 +59,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, loading, roleLoading }}>
             {children}
         </AuthContext.Provider>
     );
