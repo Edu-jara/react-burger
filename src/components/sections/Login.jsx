@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { SITE_CONFIG } from '../../config/constants';
-import LoadingSpinner from '../../components/ui/LoadingSpinner'; // 1. Importamos el spinner
+import LoadingSpinner from '../../components/ui/LoadingSpinner'; // 
 
 const Login = () => {
     const [email, setEmail] = useState('');
